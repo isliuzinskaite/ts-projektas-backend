@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import locationsRouter from './routers/locations-router';
+import propertiesRouter from './routers/properties-router';
 
 const server = express();
 
@@ -10,6 +11,7 @@ server.use(morgan(':method :url :status'));
 server.use(express.static('public'));
 server.use(express.json());
 server.use('/api/locations', locationsRouter);
+server.use('/api/properties', propertiesRouter);
 
 mongoose.connect(
   'mongodb+srv://admin:admin@cluster0.lgf8s.mongodb.net',
