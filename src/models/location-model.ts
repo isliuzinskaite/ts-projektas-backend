@@ -1,4 +1,16 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, Document, Types } from 'mongoose';
+
+type Location = {
+  region: string,
+  price: string,
+  persons: string,
+  createdAt: string,
+  updatedAt: string,
+}
+
+export type LocationDocument = Document<Types.ObjectId, unknown, Location> & Location & {
+  _id: Types.ObjectId;
+};
 
 const locationSchema = new Schema({
   region: {
