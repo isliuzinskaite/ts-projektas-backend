@@ -6,9 +6,13 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "outDir": "build",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": [
+      "@types",
+      "./node_modules/@types"
+    ]
   },
   "include": [
-    "src/**/*"
+    "./src/**/*",
   ],
 }
