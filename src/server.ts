@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 import locationsRouter from './routers/locations-router';
 import propertiesRouter from './routers/properties-router';
+import regionsRouter from './routers/regions-router';
 
 const server = express();
 
@@ -10,6 +11,7 @@ const server = express();
 server.use(morgan(':method :url :status'));
 server.use(express.static('public'));
 server.use(express.json());
+server.use('/api/regions', regionsRouter);
 server.use('/api/locations', locationsRouter);
 server.use('/api/properties', propertiesRouter);
 

@@ -2,7 +2,7 @@ import { Schema, model, Document, Types } from 'mongoose';
 import { PropertyDocument } from './property-model';
 
 type Location = {
-  region: string,
+  name: string,
   price: string,
   persons: string,
   properties: Types.ObjectId[],
@@ -19,7 +19,7 @@ export type LocationPopulatedDocument = Omit<LocationDocument, 'properties'> & {
 };
 
 const locationSchema = new Schema({
-  region: {
+  name: {
     type: String,
     required: true,
   },

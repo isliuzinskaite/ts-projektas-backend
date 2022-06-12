@@ -9,13 +9,13 @@ import createLocationPopulatedViewModel, { LocationPopulatedViewModel } from '..
 type ErrorMessagesLT = {
   price: string,
   persons: string,
-  region: string,
+  name: string,
 }
 
 const locationValidationErrorMessagesLT: ErrorMessagesLT = {
   price: 'Trūksta kainos',
   persons: 'Trūksta asmenų skaičiaus',
-  region: 'Trūksta regiono',
+  name: 'Trūksta pavadinimo',
 }
 
 const errorMessageGuard = (property: string): property is keyof ErrorMessagesLT => {
