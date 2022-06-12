@@ -1,15 +1,21 @@
 import { Schema, model, Document, Types } from 'mongoose';
+import { PropertyDocument } from './property-model';
 
 type Location = {
   region: string,
   price: string,
   persons: string,
+  properties: Types.ObjectId[],
   createdAt: string,
   updatedAt: string,
 }
 
 export type LocationDocument = Document<Types.ObjectId, unknown, Location> & Location & {
   _id: Types.ObjectId;
+};
+
+export type LocationPopulatedDocument = Omit<LocationDocument, 'properties'> & {
+  properties: PropertyDocument[]
 };
 
 const locationSchema = new Schema({
@@ -24,7 +30,11 @@ const locationSchema = new Schema({
   persons: {
     type: Number,
     required: true,
-  }
+  },
+  properties: {
+    type: [{ type: Schema.Types.ObjectId, ref: 'Property' }],
+    default: [],
+  },
 }, {
   timestamps: true,  
 });

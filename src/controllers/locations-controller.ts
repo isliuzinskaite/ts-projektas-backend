@@ -1,8 +1,10 @@
 import { RequestHandler } from "express";
 import { Error } from 'mongoose';
 import mongoose from 'mongoose'; // https://stackoverflow.com/questions/38446346/mongoose-string-to-objectid
-import LocationModel from "../models/location-model";
+import LocationModel from '../models/location-model';
+import { PropertyDocument } from '../models/property-model';
 import createLocationViewModel, { LocationViewModel } from '../view-model-creators/create-location-view-model';
+import createLocationPopulatedViewModel, { LocationPopulatedViewModel } from '../view-model-creators/create-location-populated-view-model';
 
 type ErrorMessagesLT = {
   price: string,
@@ -32,12 +34,28 @@ const formatLocationValidationError = (validationError: Error.ValidationError) =
 }
 
 export const getLocations: RequestHandler = async (req, res) => {
-  const locations = await LocationModel.find();
-  res.status(200).json(locations.map((location) => createLocationViewModel(location)));
+  const { populate } = req.query;
+  const shouldPopulateProperties = populate === 'properties';
+
+  let locations: LocationViewModel[] | LocationPopulatedViewModel[];
+  if (shouldPopulateProperties) {
+    const locationPopulatedDocs = await LocationModel
+      .find()
+      .populate<{ properties: PropertyDocument[] }>('properties');
+    locations = locationPopulatedDocs.map(createLocationPopulatedViewModel);
+  } else {
+    const locationDocs = await LocationModel.find();
+    locations = locationDocs.map(createLocationViewModel);
+  }
+
+  res.status(200).json(locations);
 };
 
 export const getLocation: RequestHandler = async (req, res) => {
   const { id } = req.params;
+  const { populate } = req.query;
+  const shouldPopulateProperties = populate === 'properties';
+
   try {
     // Validacijos klaidai
     // https://stackoverflow.com/questions/38446346/mongoose-string-to-objectid
@@ -47,10 +65,21 @@ export const getLocation: RequestHandler = async (req, res) => {
       });
       return;
     }
-    const location = await LocationModel.findById(id);
+
+    let location: LocationViewModel | LocationPopulatedViewModel;
+    if (shouldPopulateProperties) {
+      const locationPopulatedDoc = await LocationModel
+        .findById(id)
+        .populate<{ properties: PropertyDocument }>('properties');
+        location = createLocationPopulatedViewModel(locationPopulatedDoc);
+    } else {
+      const locationDoc = await LocationModel.findById(id);
+      location = createLocationViewModel(locationDoc);
+    }
+
     if (location) {
        res.status(200).json({
-        location: createLocationViewModel(location),
+        location: location,
       });
     } else {
       res.status(404).json({
