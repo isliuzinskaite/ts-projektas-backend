@@ -7,14 +7,10 @@ import createLocationViewModel, { LocationViewModel } from '../view-model-creato
 import createLocationPopulatedViewModel, { LocationPopulatedViewModel } from '../view-model-creators/create-location-populated-view-model';
 
 type ErrorMessagesLT = {
-  price: string,
-  persons: string,
   name: string,
 }
 
 const locationValidationErrorMessagesLT: ErrorMessagesLT = {
-  price: 'Trūksta kainos',
-  persons: 'Trūksta asmenų skaičiaus',
   name: 'Trūksta pavadinimo',
 }
 

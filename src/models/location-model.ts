@@ -3,8 +3,6 @@ import { PropertyDocument } from './property-model';
 
 type Location = {
   name: string,
-  price: string,
-  persons: string,
   properties: Types.ObjectId[],
   createdAt: string,
   updatedAt: string,
@@ -21,14 +19,6 @@ export type LocationPopulatedDocument = Omit<LocationDocument, 'properties'> & {
 const locationSchema = new Schema({
   name: {
     type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  persons: {
-    type: Number,
     required: true,
   },
   properties: {

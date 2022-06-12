@@ -10,8 +10,6 @@ const createLocationPopulatedViewModel = (
 ): LocationPopulatedViewModel => ({
   id: location._id.toString(),
   name: location.name,
-  price: location.price,
-  persons: location.persons,
   createdAt: location.createdAt,
   updatedAt: location.updatedAt,
   properties: location.properties.map(createPropertyViewModel),
