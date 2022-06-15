@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import config from './config';
+import cors from 'cors';
 import authRouter from './routers/auth-router';
 import locationsRouter from './routers/locations-router';
 import propertiesRouter from './routers/properties-router';
@@ -10,6 +11,7 @@ import regionsRouter from './routers/regions-router';
 const server = express();
 
 // Middlewares
+server.use(cors());
 server.use(morgan(':method :url :status'));
 server.use(express.static('public'));
 server.use(express.json());
