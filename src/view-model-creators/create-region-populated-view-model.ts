@@ -1,8 +1,8 @@
-import createLocationViewModel, { LocationViewModel } from './create-location-view-model';
+import createLocationPopulatedViewModel, { LocationPopulatedViewModel } from './create-location-populated-view-model';
 import { RegionViewModel } from './create-region-view-model';
 
 export type RegionPopulatedViewModel = Omit<RegionViewModel, 'locationIds'> & {
-  locations: LocationViewModel[],
+  locations: LocationPopulatedViewModel[],
 };
 
 const createRegionPopulatedViewModel = (
@@ -12,7 +12,7 @@ const createRegionPopulatedViewModel = (
   name: region.name,
   createdAt: region.createdAt,
   updatedAt: region.updatedAt,
-  locations: region.locations.map(createLocationViewModel),
+  locations: region.locations.map(createLocationPopulatedViewModel),
 });
 
 export default createRegionPopulatedViewModel;

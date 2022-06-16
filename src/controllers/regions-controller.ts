@@ -37,7 +37,12 @@ export const getRegions: RequestHandler = async (req, res) => {
   if (shouldPopulateLocations) {
     const regionPopulatedDocs = await RegionModel
       .find()
-      .populate<{ locations: LocationDocument[] }>('locations');
+      .populate<{ locations: LocationDocument[] }>({
+        path: 'locations',
+        populate: {
+          path: 'properties',
+        },
+      });
     regions = regionPopulatedDocs.map(createRegionPopulatedViewModel);
   } else {
     const regionDocs = await RegionModel.find();
@@ -66,7 +71,12 @@ export const getRegion: RequestHandler = async (req, res) => {
     if (shouldPopulateLocations) {
       const regionPopulatedDoc = await RegionModel
         .findById(id)
-        .populate<{ locations: LocationDocument }>('locations');
+        .populate<{ locations: LocationDocument[] }>({
+          path: 'locations',
+          populate: {
+            path: 'properties',
+          },
+        });
         region = createRegionPopulatedViewModel(regionPopulatedDoc);
     } else {
       const regionDoc = await RegionModel.findById(id);

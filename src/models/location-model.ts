@@ -4,6 +4,7 @@ import { PropertyDocument } from './property-model';
 type Location = {
   name: string,
   properties: Types.ObjectId[],
+  region: Types.ObjectId,
   createdAt: string,
   updatedAt: string,
 }
@@ -21,15 +22,18 @@ const locationSchema = new Schema({
     type: String,
     required: true,
   },
-  properties: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'Property' }],
-    default: [],
-  },
+  region: { type: Schema.Types.ObjectId, ref: 'Region' }
 }, {
   timestamps: true,  
 });
 
-// collection name - "locations"
+// https://mongoosejs.com/docs/populate.html#populate-virtuals
+locationSchema.virtual('properties', {
+  ref: 'Property',
+  localField: '_id',
+  foreignField: 'location',
+});
+
 const LocationModel = model('Location', locationSchema);
 
 export default LocationModel;

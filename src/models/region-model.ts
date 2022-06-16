@@ -1,5 +1,5 @@
 import { Schema, model, Document, Types } from 'mongoose';
-import { LocationDocument } from './location-model';
+import { LocationPopulatedDocument } from './location-model';
 
 type Region = {
   name: string,
@@ -13,7 +13,7 @@ export type RegionDocument = Document<Types.ObjectId, unknown, Region> & Region 
 };
 
 export type RegionPopulatedDocument = Omit<RegionDocument, 'locations'> & {
-  locations: LocationDocument[]
+  locations: LocationPopulatedDocument[]
 };
 
 const regionSchema = new Schema({
@@ -21,15 +21,17 @@ const regionSchema = new Schema({
     type: String,
     required: true,
   },
-  locations: {
-    type: [{ type: Schema.Types.ObjectId, ref: 'Location' }],
-    default: [],
-  },
 }, {
   timestamps: true,  
 });
 
-// collection name - "regions"
+// https://mongoosejs.com/docs/populate.html#populate-virtuals
+regionSchema.virtual('locations', {
+  ref: 'Location',
+  localField: '_id',
+  foreignField: 'region',
+});
+
 const RegionModel = model('Region', regionSchema);
 
 export default RegionModel;

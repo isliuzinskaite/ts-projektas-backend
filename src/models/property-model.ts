@@ -5,6 +5,7 @@ type Property = {
   address: string,
   image: string,
   phone: string,
+  location: Types.ObjectId,
   createdAt: string,
   updatedAt: string,
 }
@@ -29,7 +30,8 @@ const propertySchema = new Schema({
   phone: {
     type: String,
     required: true,
-  }
+  },
+  location: { type: Schema.Types.ObjectId, ref: 'Location' }
 }, {
   timestamps: true,  
 });
